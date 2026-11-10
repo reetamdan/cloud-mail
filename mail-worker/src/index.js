@@ -6,8 +6,12 @@ import emailService from './service/email-service';
 import r2Service from './service/r2-service';
 import oauthService from './service/oauth-service';
 import analysisService from './service/analysis-service';
+import { gate } from './gate';
 export default {
 	 async fetch(req, env, ctx) {
+
+		const blocked = await gate(req, env);
+		if (blocked) return blocked;
 
 		const url = new URL(req.url)
 
